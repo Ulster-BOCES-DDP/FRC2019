@@ -13,13 +13,27 @@ package org.usfirst.frc.team6463.robot;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
-public enum RobotMap {
+public class RobotMap {
 	//PWM Motor Mappings
-	LEFT_MOTOR(0), 
-	RIGHT_MOTOR(1),
-	//Control Mappings
-	LEFT_JOYSTICK(0),
-	RIGHT_JOYSTICK(1);
+	public static final int FRONT_LEFT_MOTOR_PORT = 0;
+	public static final int REAR_LEFT_MOTOR_PORT = 1;
+	public static final int FRONT_RIGHT_MOTOR_PORT = 2;
+	public static final int REAR_RIGHT_MOTOR_PORT = 3;
+	
+	//PWM claw motor mappings
+	public static final int CLAW_RIGHT = 4;
+	public static final int CLAW_LEFT = 5;
+	
+	//Arm wrist motor
+	public static final int WRIST_REDLINE = 6;
+	
+	//ARM TOP motor
+	public static final int ARM_LEFT = 7;
+	public static final int ARM_RIGHT = 8;
+	
+	// Winch Motor
+	public static final int WINCH = 9;
+	
 	public final int value;
 
 	RobotMap(int value) {

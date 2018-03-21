@@ -7,13 +7,35 @@
 
 package org.usfirst.frc.team6463.robot;
 
+
+import org.usfirst.frc.team6463.robot.commands.TeleopArmLower_Commands;
+import org.usfirst.frc.team6463.robot.commands.TeleopArmRaise_Commands;
+import org.usfirst.frc.team6463.robot.commands.TeleopClawBoxIn_Commands;
+import org.usfirst.frc.team6463.robot.commands.TeleopClawBoxOut_Commands;
+import org.usfirst.frc.team6463.robot.commands.TeleopWinchUp_Commands;
+import org.usfirst.frc.team6463.robot.commands.TeleopWinchDown_Commands;
+import org.usfirst.frc.team6463.robot.commands.TeleopWristUp_Commands;
+import org.usfirst.frc.team6463.robot.commands.TeleopWristDown_Commands;
+
 import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * This class is the glue that binds the controls on the physical operator
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
+	public static final int JOYSTICK_PORT = 0;
+	public static final int LEFT_Y_AXIS = 1;
+	public static final int RIGHT_Y_AXIS = 3;
+	
+	
+	private Joystick joystick = new Joystick(JOYSTICK_PORT);
+	
+	public Joystick getJoystick() {
+		return joystick;
+	}
+	
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a
 	//// joystick.
@@ -41,34 +63,67 @@ public class OI {
 	// Start the command when the button is released and let it run the command
 	// until it is finished as determined by it's isFinished method.
 	// button.whenReleased(new ExampleCommand());
-	public static final double JOY_DEADZONE = 0.05;
 	
-	public final Joystick LEFT_JOY = new Joystick(RobotMap.LEFT_JOYSTICK.value);
-	public final Joystick RIGHT_JOY = new Joystick(RobotMap.RIGHT_JOYSTICK.value);
 	
-	public double getLeftJoyX() {
-		double raw = LEFT_JOY.getX();
-		return Math.abs(raw) < JOY_DEADZONE ? 0.0 : raw;
+	//public static final double JOY_DEADZONE = 0.05;
+	
+	//public final Joystick LEFT_JOY = new Joystick(RobotMap.LEFT_JOYSTICK.value);
+	//public final Joystick RIGHT_JOY = new Joystick(RobotMap.RIGHT_JOYSTICK.value);
+	
+	//public double getLeftJoyX() {
+		//double raw = LEFT_JOY.getX();
+		//return Math.abs(raw) < JOY_DEADZONE ? 0.0 : raw;
 		
-	}
-	public double getLeftJoyY() {
-		double raw = LEFT_JOY.getY();
-		return Math.abs(raw) < JOY_DEADZONE ? 0.0 : raw;
+	//}
+	//public double getLeftJoyY() {
+		//double raw = LEFT_JOY.getY();
+		//return Math.abs(raw) < JOY_DEADZONE ? 0.0 : raw;
 		
-	}
-	public double getRightJoyX() {
-		double raw = RIGHT_JOY.getX();
-		return Math.abs(raw) < JOY_DEADZONE ? 0.0 : raw;
+	//}
+	//public double getRightJoyX() {
+		//double raw = RIGHT_JOY.getX();
+		//return Math.abs(raw) < JOY_DEADZONE ? 0.0 : raw;
 		
-	}
-	public double getRightJoyY() {
-		double raw = RIGHT_JOY.getY();
-		return Math.abs(raw) < JOY_DEADZONE ? 0.0 : raw;
+	//}
+	//public double getRightJoyY() {
+		//double raw = RIGHT_JOY.getY();
+		//return Math.abs(raw) < JOY_DEADZONE ? 0.0 : raw;
 		
-	}
+	//}
+	
+	
 	
 	public OI() {
+		JoystickButton BoxIn = new JoystickButton(joystick, 5);
+		JoystickButton BoxOut = new JoystickButton(joystick, 8);
 		
+		BoxIn.whileHeld((new TeleopClawBoxIn_Commands()));
+		
+		BoxOut.whileHeld(new TeleopClawBoxOut_Commands());
+		
+		JoystickButton RaiseArm = new JoystickButton(joystick, 5);
+		JoystickButton LowerArm = new JoystickButton(joystick, 7);
+		
+		RaiseArm.whileHeld(new TeleopArmRaise_Commands());
+		
+		LowerArm.whileHeld(new TeleopArmLower_Commands());
+		
+		JoystickButton RaiseWinch = new JoystickButton(joystick, 1);
+		JoystickButton LowerWinch = new JoystickButton(joystick, 3);
+		
+		RaiseWinch.whileHeld(new TeleopWinchUp_Commands());
+		LowerWinch.whileHeld(new TeleopWinchDown_Commands());
+		
+		JoystickButton RaiseWrist = new JoystickButton(joystick, 4);
+		JoystickButton LowerWrist = new JoystickButton(joystick, 2);
+		
+		RaiseWrist.whileHeld(new TeleopWristUp_Commands());
+		LowerWrist.whileHeld(new TeleopWristDown_Commands());
+	}
+	
+	public void debug(){
+		System.out.println("Debug");
+		System.out.println(joystick.getRawButton(5));
 		
 	}
 }

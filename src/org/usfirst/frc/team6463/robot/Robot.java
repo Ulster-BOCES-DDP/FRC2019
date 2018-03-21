@@ -7,13 +7,18 @@
 
 package org.usfirst.frc.team6463.robot;
 
-import org.usfirst.frc.team6463.robot.subsystems.*;
+import java.util.Date;
+
+import org.usfirst.frc.team6463.robot.subsystems.Arm_Subsystem;
+import org.usfirst.frc.team6463.robot.subsystems.Claw_Subsystem;
+import org.usfirst.frc.team6463.robot.subsystems.Drivebase;
+import org.usfirst.frc.team6463.robot.subsystems.Winch_Subsystem;
+import org.usfirst.frc.team6463.robot.subsystems.Wrist_Subsystem;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,8 +28,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * project.
  */
 public class Robot extends TimedRobot {
+	public static final Subsystem WINCH = null;
 	public static OI oi;
 	public static Drivebase drivebase;
+	public static Claw_Subsystem claw;
+	public static Arm_Subsystem arm;
+	public static Winch_Subsystem winch;
+	public static Wrist_Subsystem wrist;
+	private Date autostart;
+	
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -32,9 +44,15 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		oi = new OI();
+		
 		// chooser.addObject("My Auto", new MyAutoCommand());
 		drivebase = new Drivebase();
+		claw = new Claw_Subsystem();
+		arm = new Arm_Subsystem();
+		winch = new Winch_Subsystem();
+		wrist = new Wrist_Subsystem();
+		oi = new OI();
+		
 	}
 
 	/**
@@ -66,6 +84,8 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		autostart = new Date();
+		
 	}
 
 	/**
@@ -74,6 +94,12 @@ public class Robot extends TimedRobot {
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
+		if(autostart.getTime() +5 < new Date().getTime()) {
+			Robot.drivebase.tankDrive(-.5, -.5);
+		} else {
+			Robot.drivebase.tankDrive(0, 0);
+		}
+    
 	}
 
 	@Override
@@ -90,6 +116,12 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
+	}
+	
+	public void testInit(){
+		//VictorSP test = new VictorSP(5);
+		//VictorSP test2 = new VictorSP(4);
 	}
 
 	/**
@@ -97,5 +129,6 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+		oi.debug();
 	}
 }
